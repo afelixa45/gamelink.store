@@ -40,6 +40,7 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Quick Themes</label>
                     <select id="preset-themes" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         <option value="custom">Custom Theme</option>
+                        <option value="completion">Completion State</option>
                         <option value="safari">Safari Adventure</option>
                         <option value="tech">Tech World</option>
                         <option value="food">Delicious Food</option>
@@ -158,6 +159,9 @@
                     <button id="start-game" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mb-2">
                         开始游戏
                     </button>
+                    <button id="pause-game" class="bg-yellow-600 text-white px-6 py-2 rounded-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 mb-2 hidden">
+                        暂停游戏
+                    </button>
                     <div id="timer" class="text-2xl font-semibold text-gray-900">00:00:00</div>
                 </div>
                 <iframe id="game-iframe"
@@ -234,6 +238,14 @@
 
             // Preset themes configuration
             const presets = {
+                completion: {
+                    red: { category: 'animals', value: 'cat' },
+                    white: { category: 'animals', value: 'dog' },
+                    blue: { category: 'animals', value: 'pig' },
+                    green: { category: 'animals', value: 'sheep' },
+                    orange: { category: 'animals', value: 'koala' },
+                    yellow: { category: 'animals', value: 'panda' }
+                },
                 safari: {
                     red: { category: 'animals', value: 'lion' },
                     white: { category: 'animals', value: 'elephant' },
@@ -406,12 +418,15 @@
 
             // Timer functionality
             const startButton = document.getElementById('start-game');
+            const pauseButton = document.getElementById('pause-game');
             const timerDisplay = document.getElementById('timer');
             const completionMessage = document.getElementById('completion-message');
             const completionTime = document.getElementById('completion-time');
             let startTime;
             let timerInterval;
             let isGameRunning = false;
+            let isPaused = false;
+            let elapsedTime = 0;
 
             function formatTime(ms) {
                 const hours = Math.floor(ms / 3600000);
@@ -421,91 +436,75 @@
             }
 
             function updateTimer() {
-                const currentTime = Date.now();
-                const elapsedTime = currentTime - startTime;
-                timerDisplay.textContent = formatTime(elapsedTime);
+                if (!isPaused) {
+                    const currentTime = Date.now();
+                    elapsedTime = currentTime - startTime;
+                    timerDisplay.textContent = formatTime(elapsedTime);
+                }
             }
 
             function startGame() {
-                if (isGameRunning) return;
+                if (isGameRunning && !isPaused) return;
                 
-                // Reset game state
-                isGameRunning = true;
-                startTime = Date.now();
-                completionMessage.classList.add('hidden');
+                if (!isGameRunning) {
+                    // Start new game
+                    isGameRunning = true;
+                    startTime = Date.now();
+                    elapsedTime = 0;
+                    completionMessage.classList.add('hidden');
+                    
+                    // Reset cube to initial state
+                    const defaultValues = {
+                        red: { category: 'animals', value: 'cat' },
+                        white: { category: 'animals', value: 'dog' },
+                        blue: { category: 'animals', value: 'pig' },
+                        green: { category: 'animals', value: 'sheep' },
+                        orange: { category: 'animals', value: 'koala' },
+                        yellow: { category: 'animals', value: 'panda' }
+                    };
+
+                    Object.entries(defaultValues).forEach(([face, config]) => {
+                        const categorySelect = document.querySelector(`.category-select[data-face="${face}"]`);
+                        const cubeSelect = document.querySelector(`.cube-face[data-face="${face}"]`);
+                        categorySelect.value = config.category;
+                        updateSelectOptions(categorySelect);
+                        cubeSelect.value = config.value;
+                    });
+                    updateIframeUrl();
+                } else if (isPaused) {
+                    // Resume game
+                    startTime = Date.now() - elapsedTime;
+                    isPaused = false;
+                }
+
                 startButton.textContent = '游戏进行中...';
                 startButton.disabled = true;
                 startButton.classList.add('bg-gray-400');
                 startButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                pauseButton.classList.remove('hidden');
                 
-                // Start timer
+                // Start or resume timer
                 timerInterval = setInterval(updateTimer, 1000);
+            }
+
+            function pauseGame() {
+                if (!isGameRunning || isPaused) return;
                 
-                // Reset cube to initial state
-                const defaultValues = {
-                    red: { category: 'animals', value: 'cat' },
-                    white: { category: 'animals', value: 'dog' },
-                    blue: { category: 'animals', value: 'pig' },
-                    green: { category: 'animals', value: 'sheep' },
-                    orange: { category: 'animals', value: 'koala' },
-                    yellow: { category: 'animals', value: 'panda' }
-                };
-
-                Object.entries(defaultValues).forEach(([face, config]) => {
-                    const categorySelect = document.querySelector(`.category-select[data-face="${face}"]`);
-                    const cubeSelect = document.querySelector(`.cube-face[data-face="${face}"]`);
-                    categorySelect.value = config.category;
-                    updateSelectOptions(categorySelect);
-                    cubeSelect.value = config.value;
-                });
-                updateIframeUrl();
+                // Pause timer
+                clearInterval(timerInterval);
+                isPaused = true;
+                
+                // Update button states
+                startButton.textContent = '继续游戏';
+                startButton.disabled = false;
+                startButton.classList.remove('bg-gray-400');
+                startButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                pauseButton.classList.add('hidden');
             }
 
-            function checkCompletion() {
-                // Check if all faces are back to their original colors
-                const currentState = {
-                    red: document.querySelector('.cube-face[data-face="red"]').value,
-                    white: document.querySelector('.cube-face[data-face="white"]').value,
-                    blue: document.querySelector('.cube-face[data-face="blue"]').value,
-                    green: document.querySelector('.cube-face[data-face="green"]').value,
-                    orange: document.querySelector('.cube-face[data-face="orange"]').value,
-                    yellow: document.querySelector('.cube-face[data-face="yellow"]').value
-                };
-
-                const isComplete = currentState.red === 'cat' &&
-                                 currentState.white === 'dog' &&
-                                 currentState.blue === 'pig' &&
-                                 currentState.green === 'sheep' &&
-                                 currentState.orange === 'koala' &&
-                                 currentState.yellow === 'panda';
-
-                if (isComplete && isGameRunning) {
-                    // Stop timer and show completion message
-                    clearInterval(timerInterval);
-                    isGameRunning = false;
-                    const finalTime = formatTime(Date.now() - startTime);
-                    completionTime.textContent = finalTime;
-                    completionMessage.classList.remove('hidden');
-                    startButton.textContent = '开始游戏';
-                    startButton.disabled = false;
-                    startButton.classList.remove('bg-gray-400');
-                    startButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
-                }
-            }
-
-            // Add event listener for start button
+            // Add event listener for start and pause buttons
             startButton.addEventListener('click', startGame);
-
-            // Add completion check to cube face changes
-            cubeSelects.forEach(select => {
-                select.addEventListener('change', () => {
-                    updateIframeUrl();
-                    presetThemes.value = 'custom';
-                    if (isGameRunning) {
-                        checkCompletion();
-                    }
-                });
-            });
+            pauseButton.addEventListener('click', pauseGame);
         });
     </script>
 </body>
