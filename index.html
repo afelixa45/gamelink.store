@@ -34,8 +34,79 @@
         <p class="text-xl text-gray-600 mb-8">A delightful puzzle game where you match and rotate colorful animal cubes to create a perfect zoo!</p>
 
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div class="mb-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Customize Your Animal Cube</h2>
+                <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-700">Red Face</label>
+                        <select class="cube-face w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" data-face="red">
+                            <option value="cat">Cat</option>
+                            <option value="dog">Dog</option>
+                            <option value="pig">Pig</option>
+                            <option value="sheep">Sheep</option>
+                            <option value="koala">Koala</option>
+                            <option value="ant">Ant</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-700">White Face</label>
+                        <select class="cube-face w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" data-face="white">
+                            <option value="dog">Dog</option>
+                            <option value="cat">Cat</option>
+                            <option value="pig">Pig</option>
+                            <option value="sheep">Sheep</option>
+                            <option value="koala">Koala</option>
+                            <option value="ant">Ant</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-700">Blue Face</label>
+                        <select class="cube-face w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" data-face="blue">
+                            <option value="pig">Pig</option>
+                            <option value="cat">Cat</option>
+                            <option value="dog">Dog</option>
+                            <option value="sheep">Sheep</option>
+                            <option value="koala">Koala</option>
+                            <option value="ant">Ant</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-700">Green Face</label>
+                        <select class="cube-face w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" data-face="green">
+                            <option value="sheep">Sheep</option>
+                            <option value="cat">Cat</option>
+                            <option value="dog">Dog</option>
+                            <option value="pig">Pig</option>
+                            <option value="koala">Koala</option>
+                            <option value="ant">Ant</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-700">Orange Face</label>
+                        <select class="cube-face w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" data-face="orange">
+                            <option value="koala">Koala</option>
+                            <option value="cat">Cat</option>
+                            <option value="dog">Dog</option>
+                            <option value="pig">Pig</option>
+                            <option value="sheep">Sheep</option>
+                            <option value="ant">Ant</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="block text-sm font-medium text-gray-700">Yellow Face</label>
+                        <select class="cube-face w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" data-face="yellow">
+                            <option value="ant">Ant</option>
+                            <option value="cat">Cat</option>
+                            <option value="dog">Dog</option>
+                            <option value="pig">Pig</option>
+                            <option value="sheep">Sheep</option>
+                            <option value="koala">Koala</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="game-container">
-                <iframe 
+                <iframe id="game-iframe"
                     src="https://zoo-js.github.io/3dcube/?red=cat&white=dog&blue=pig&green=sheep&orange=koala&yellow=ant&bg=*ffd8bf"
                     class="w-full h-full rounded-lg"
                     frameborder="0"
@@ -95,5 +166,25 @@
             <p class="text-center text-gray-500">© 2024 gamelink.store. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selects = document.querySelectorAll('.cube-face');
+            const iframe = document.getElementById('game-iframe');
+            const baseUrl = 'https://zoo-js.github.io/3dcube/?';
+
+            function updateIframeUrl() {
+                const params = Array.from(selects).map(select => {
+                    return `${select.dataset.face}=${select.value}`;
+                });
+                params.push('bg=*ffd8bf');
+                iframe.src = baseUrl + params.join('&');
+            }
+
+            selects.forEach(select => {
+                select.addEventListener('change', updateIframeUrl);
+            });
+        });
+    </script>
 </body>
 </html> 
