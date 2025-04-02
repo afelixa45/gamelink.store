@@ -44,7 +44,6 @@
                         <option value="tech">Tech World</option>
                         <option value="food">Delicious Food</option>
                         <option value="nature">Natural World</option>
-                        <option value="daily">Daily Life</option>
                         <option value="mixed">Fun Mix</option>
                     </select>
                 </div>
@@ -258,14 +257,6 @@
                     orange: { category: 'nature', value: 'flower' },
                     yellow: { category: 'nature', value: 'star' }
                 },
-                daily: {
-                    red: { category: 'life', value: 'phone' },
-                    white: { category: 'life', value: 'book' },
-                    blue: { category: 'life', value: 'music' },
-                    green: { category: 'life', value: 'camera' },
-                    orange: { category: 'life', value: 'car' },
-                    yellow: { category: 'life', value: 'heart' }
-                },
                 mixed: {
                     red: { category: 'animals', value: 'panda' },
                     white: { category: 'tech', value: 'html' },
@@ -360,6 +351,24 @@
                 params.push('bg=*ffd8bf');
                 iframe.src = baseUrl + params.join('&');
             }
+
+            // Add event listeners for category changes
+            categorySelects.forEach(select => {
+                select.addEventListener('change', () => {
+                    updateSelectOptions(select);
+                    // Reset preset to custom when manually changing categories
+                    presetThemes.value = 'custom';
+                });
+            });
+
+            // Add event listeners for cube face changes
+            cubeSelects.forEach(select => {
+                select.addEventListener('change', () => {
+                    updateIframeUrl();
+                    // Reset preset to custom when manually changing faces
+                    presetThemes.value = 'custom';
+                });
+            });
 
             // Initialize all faces with their default categories
             categorySelects.forEach(select => updateSelectOptions(select));
