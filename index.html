@@ -326,26 +326,22 @@
                 },
                 food: {
                     acorn: "Acorn", apple: "Apple", banana: "Banana", beer: "Beer",
-                    carrot: "Carrot", cherry: "Cherry", cocktail: "Cocktail",
-                    coffee: "Coffee", coke: "Coke", cookie: "Cookie", corn: "Corn",
-                    egg: "Egg", grape: "Grape", hamburger: "Hamburger",
-                    "ice-cream": "Ice Cream", latte: "Latte", lemon: "Lemon",
+                    carrot: "Carrot", cherry: "Cherry", coffee: "Coffee", 
+                    cookie: "Cookie", corn: "Corn", egg: "Egg", grape: "Grape", 
+                    hamburger: "Hamburger", icecream: "Ice Cream", lemon: "Lemon",
                     milk: "Milk", orange: "Orange", peach: "Peach",
                     pineapple: "Pineapple", pizza: "Pizza", popsicle: "Popsicle",
                     strawberry: "Strawberry", tea: "Tea", watermelon: "Watermelon"
                 },
                 nature: {
                     bamboo: "Bamboo", cactus: "Cactus", cloud: "Cloud",
-                    earth: "Earth", flower: "Flower", grass: "Grass",
-                    moon: "Moon", rainbow: "Rainbow", rose: "Rose",
-                    sakura: "Sakura", star: "Star", sun: "Sun",
-                    tree: "Tree"
+                    flower: "Flower", grass: "Grass", moon: "Moon", 
+                    rainbow: "Rainbow", rose: "Rose", sakura: "Sakura", 
+                    star: "Star", sun: "Sun", tree: "Tree"
                 },
                 tech: {
-                    cool: "Cool", bug: "Bug", pixel: "Pixel", mac: "Mac",
-                    iphone: "iPhone", ipad: "iPad", html: "HTML", js: "JavaScript",
-                    ts: "TypeScript", css: "CSS", "c": "C#", cpp: "C++",
-                    vue: "Vue", react: "React"
+                    bug: "Bug", apple: "Apple", html: "HTML", js: "JavaScript",
+                    ts: "TypeScript", css: "CSS", vue: "Vue", react: "React"
                 },
                 life: {
                     alarm: "Alarm", ambulance: "Ambulance", anchor: "Anchor",
@@ -354,23 +350,21 @@
                     book: "Book", bottle: "Bottle", bowl: "Bowl", box: "Box",
                     brush: "Brush", bucket: "Bucket", camera: "Camera",
                     candle: "Candle", candy: "Candy", car: "Car", card: "Card",
-                    chair: "Chair", clock: "Clock", clothes: "Clothes",
-                    compass: "Compass", crown: "Crown", cup: "Cup", desk: "Desk",
-                    door: "Door", dress: "Dress", drum: "Drum", fan: "Fan",
-                    fire: "Fire", flag: "Flag", flower: "Flower", fork: "Fork",
-                    gift: "Gift", glasses: "Glasses", glove: "Glove",
-                    guitar: "Guitar", hat: "Hat", heart: "Heart", home: "Home",
-                    key: "Key", knife: "Knife", lamp: "Lamp", leaf: "Leaf",
-                    lock: "Lock", map: "Map", medal: "Medal", money: "Money",
-                    moon: "Moon", music: "Music", paint: "Paint", pen: "Pen",
+                    chair: "Chair", clock: "Clock", compass: "Compass", 
+                    crown: "Crown", cup: "Cup", desk: "Desk", door: "Door", 
+                    dress: "Dress", drum: "Drum", fan: "Fan", flag: "Flag", 
+                    flower: "Flower", fork: "Fork", gift: "Gift", 
+                    glasses: "Glasses", glove: "Glove", guitar: "Guitar", 
+                    hat: "Hat", heart: "Heart", key: "Key", knife: "Knife", 
+                    lamp: "Lamp", leaf: "Leaf", lock: "Lock", map: "Map", 
+                    medal: "Medal", moon: "Moon", music: "Music", pen: "Pen",
                     pencil: "Pencil", phone: "Phone", piano: "Piano",
-                    picture: "Picture", pillow: "Pillow", plane: "Plane",
-                    plant: "Plant", pot: "Pot", rainbow: "Rainbow",
-                    ring: "Ring", rocket: "Rocket", ruler: "Ruler",
-                    scissors: "Scissors", ship: "Ship", shoe: "Shoe",
-                    soap: "Soap", sock: "Sock", spoon: "Spoon", star: "Star",
-                    sun: "Sun", table: "Table", tent: "Tent",
-                    umbrella: "Umbrella", watch: "Watch", water: "Water"
+                    pillow: "Pillow", plane: "Plane", pot: "Pot", 
+                    rainbow: "Rainbow", ring: "Ring", rocket: "Rocket", 
+                    ruler: "Ruler", scissors: "Scissors", ship: "Ship", 
+                    shoe: "Shoe", soap: "Soap", sock: "Sock", spoon: "Spoon", 
+                    star: "Star", sun: "Sun", table: "Table", tent: "Tent",
+                    umbrella: "Umbrella", watch: "Watch"
                 }
             };
 
@@ -410,8 +404,29 @@
                 select.addEventListener('change', updateIframeUrl);
             });
 
-            // Initialize all faces with their default categories
-            categorySelects.forEach(select => updateSelectOptions(select));
+            // Initialize with default values
+            window.addEventListener('DOMContentLoaded', function() {
+                const defaultValues = {
+                    red: { category: 'animals', value: 'cat' },
+                    white: { category: 'animals', value: 'dog' },
+                    blue: { category: 'animals', value: 'pig' },
+                    green: { category: 'animals', value: 'sheep' },
+                    orange: { category: 'animals', value: 'koala' },
+                    yellow: { category: 'animals', value: 'ant' }
+                };
+
+                Object.entries(defaultValues).forEach(([face, config]) => {
+                    const categorySelect = document.querySelector(`.category-select[data-face="${face}"]`);
+                    categorySelect.value = config.category;
+                    updateSelectOptions(categorySelect);
+                    
+                    setTimeout(() => {
+                        const cubeSelect = document.querySelector(`.cube-face[data-face="${face}"]`);
+                        cubeSelect.value = config.value;
+                        updateIframeUrl();
+                    }, 100);
+                });
+            });
         });
     </script>
 </body>
