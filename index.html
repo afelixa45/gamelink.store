@@ -159,7 +159,7 @@
                     <button id="start-game" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mb-2">
                         开始游戏
                     </button>
-                    <button id="pause-game" class="bg-yellow-600 text-white px-6 py-2 rounded-md hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 mb-2 hidden">
+                    <button id="pause-game" class="bg-orange-500 text-white px-6 py-2 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 mb-2 hidden">
                         暂停游戏
                     </button>
                     <div id="timer" class="text-2xl font-semibold text-gray-900">00:00:00</div>
@@ -239,12 +239,12 @@
             // Preset themes configuration
             const presets = {
                 completion: {
-                    red: { category: 'animals', value: 'red' },
-                    white: { category: 'animals', value: 'white' },
-                    blue: { category: 'animals', value: 'blue' },
-                    green: { category: 'animals', value: 'green' },
-                    orange: { category: 'animals', value: 'orange' },
-                    yellow: { category: 'animals', value: 'yellow' }
+                    red: { category: 'tech', value: 'html' },
+                    white: { category: 'tech', value: 'css' },
+                    blue: { category: 'tech', value: 'js' },
+                    green: { category: 'tech', value: 'vue' },
+                    orange: { category: 'tech', value: 'react' },
+                    yellow: { category: 'tech', value: 'ts' }
                 },
                 safari: {
                     red: { category: 'animals', value: 'lion' },
@@ -452,34 +452,14 @@
                     startTime = Date.now();
                     elapsedTime = 0;
                     completionMessage.classList.add('hidden');
-                    
-                    // Reset cube to initial state
-                    const defaultValues = {
-                        red: { category: 'animals', value: 'cat' },
-                        white: { category: 'animals', value: 'dog' },
-                        blue: { category: 'animals', value: 'pig' },
-                        green: { category: 'animals', value: 'sheep' },
-                        orange: { category: 'animals', value: 'koala' },
-                        yellow: { category: 'animals', value: 'panda' }
-                    };
-
-                    Object.entries(defaultValues).forEach(([face, config]) => {
-                        const categorySelect = document.querySelector(`.category-select[data-face="${face}"]`);
-                        const cubeSelect = document.querySelector(`.cube-face[data-face="${face}"]`);
-                        categorySelect.value = config.category;
-                        updateSelectOptions(categorySelect);
-                        cubeSelect.value = config.value;
-                    });
-                    updateIframeUrl();
                 } else if (isPaused) {
                     // Resume game
                     startTime = Date.now() - elapsedTime;
                     isPaused = false;
                 }
 
-                startButton.disabled = true;
-                startButton.classList.add('bg-gray-400');
-                startButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+                startButton.textContent = '继续游戏';
+                startButton.classList.add('hidden');
                 pauseButton.classList.remove('hidden');
                 
                 // Start or resume timer
@@ -494,15 +474,12 @@
                 isPaused = true;
                 
                 // Update button states
-                startButton.textContent = '继续游戏';
-                startButton.disabled = false;
-                startButton.classList.remove('bg-gray-400');
-                startButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                startButton.classList.remove('hidden');
                 pauseButton.classList.add('hidden');
             }
 
             function checkCompletion() {
-                // Check if all faces are back to their original colors
+                // Check if all faces match their corresponding colors
                 const currentState = {
                     red: document.querySelector('.cube-face[data-face="red"]').value,
                     white: document.querySelector('.cube-face[data-face="white"]').value,
@@ -512,12 +489,12 @@
                     yellow: document.querySelector('.cube-face[data-face="yellow"]').value
                 };
 
-                const isComplete = currentState.red === 'red' &&
-                                 currentState.white === 'white' &&
-                                 currentState.blue === 'blue' &&
-                                 currentState.green === 'green' &&
-                                 currentState.orange === 'orange' &&
-                                 currentState.yellow === 'yellow';
+                const isComplete = currentState.red === 'html' &&
+                                 currentState.white === 'css' &&
+                                 currentState.blue === 'js' &&
+                                 currentState.green === 'vue' &&
+                                 currentState.orange === 'react' &&
+                                 currentState.yellow === 'ts';
 
                 if (isComplete && isGameRunning) {
                     // Stop timer and show completion message
@@ -527,13 +504,12 @@
                     completionTime.textContent = finalTime;
                     completionMessage.classList.remove('hidden');
                     startButton.textContent = '开始游戏';
-                    startButton.disabled = false;
-                    startButton.classList.remove('bg-gray-400');
-                    startButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
+                    startButton.classList.remove('hidden');
+                    pauseButton.classList.add('hidden');
                 }
             }
 
-            // Add completion check to cube face changes
+            // Add event listeners for cube face changes to check completion
             cubeSelects.forEach(select => {
                 select.addEventListener('change', () => {
                     updateIframeUrl();
@@ -544,7 +520,7 @@
                 });
             });
 
-            // Add event listener for start and pause buttons
+            // Add event listeners for start and pause buttons
             startButton.addEventListener('click', startGame);
             pauseButton.addEventListener('click', pauseGame);
         });
