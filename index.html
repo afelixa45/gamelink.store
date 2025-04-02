@@ -35,17 +35,49 @@
 
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <div class="mb-6">
-                <h2 class="text-xl font-semibold text-gray-900 mb-4">Customize Your Animal Cube</h2>
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Customize Your Cube</h2>
                 <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
                     <div class="space-y-2">
                         <label class="block text-sm font-medium text-gray-700">Red Face</label>
-                        <select class="cube-face w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" data-face="red">
-                            <option value="cat">Cat</option>
-                            <option value="dog">Dog</option>
-                            <option value="pig">Pig</option>
-                            <option value="sheep">Sheep</option>
-                            <option value="koala">Koala</option>
-                            <option value="ant">Ant</option>
+                        <select class="category-select w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 mb-2" data-face="red">
+                            <option value="animals">Animals</option>
+                            <option value="food">Food</option>
+                            <option value="nature">Nature</option>
+                            <option value="tech">Technology</option>
+                        </select>
+                        <select class="cube-face w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" data-face="red" data-category="animals">
+                            <optgroup label="Animals">
+                                <option value="cat">Cat</option>
+                                <option value="dog">Dog</option>
+                                <option value="lion">Lion</option>
+                                <option value="tiger">Tiger</option>
+                                <option value="panda">Panda</option>
+                                <option value="penguin">Penguin</option>
+                            </optgroup>
+                            <optgroup label="Food" style="display:none">
+                                <option value="apple">Apple</option>
+                                <option value="banana">Banana</option>
+                                <option value="pizza">Pizza</option>
+                                <option value="hamburger">Hamburger</option>
+                                <option value="ice-cream">Ice Cream</option>
+                                <option value="coffee">Coffee</option>
+                            </optgroup>
+                            <optgroup label="Nature" style="display:none">
+                                <option value="sun">Sun</option>
+                                <option value="moon">Moon</option>
+                                <option value="star">Star</option>
+                                <option value="cloud">Cloud</option>
+                                <option value="rainbow">Rainbow</option>
+                                <option value="tree">Tree</option>
+                            </optgroup>
+                            <optgroup label="Technology" style="display:none">
+                                <option value="html">HTML</option>
+                                <option value="css">CSS</option>
+                                <option value="js">JavaScript</option>
+                                <option value="vue">Vue</option>
+                                <option value="react">React</option>
+                                <option value="ts">TypeScript</option>
+                            </optgroup>
                         </select>
                     </div>
                     <div class="space-y-2">
@@ -57,6 +89,12 @@
                             <option value="sheep">Sheep</option>
                             <option value="koala">Koala</option>
                             <option value="ant">Ant</option>
+                            <option value="rabbit">Rabbit</option>
+                            <option value="fox">Fox</option>
+                            <option value="dolphin">Dolphin</option>
+                            <option value="elephant">Elephant</option>
+                            <option value="giraffe">Giraffe</option>
+                            <option value="unicorn">Unicorn</option>
                         </select>
                     </div>
                     <div class="space-y-2">
@@ -68,6 +106,12 @@
                             <option value="sheep">Sheep</option>
                             <option value="koala">Koala</option>
                             <option value="ant">Ant</option>
+                            <option value="whale">Whale</option>
+                            <option value="shark">Shark</option>
+                            <option value="octopus">Octopus</option>
+                            <option value="jellyfish">Jellyfish</option>
+                            <option value="starfish">Starfish</option>
+                            <option value="seal">Seal</option>
                         </select>
                     </div>
                     <div class="space-y-2">
@@ -79,6 +123,12 @@
                             <option value="pig">Pig</option>
                             <option value="koala">Koala</option>
                             <option value="ant">Ant</option>
+                            <option value="snake">Snake</option>
+                            <option value="turtle">Turtle</option>
+                            <option value="frog">Frog</option>
+                            <option value="chameleon">Chameleon</option>
+                            <option value="iguana">Iguana</option>
+                            <option value="lizard">Lizard</option>
                         </select>
                     </div>
                     <div class="space-y-2">
@@ -90,6 +140,12 @@
                             <option value="pig">Pig</option>
                             <option value="sheep">Sheep</option>
                             <option value="ant">Ant</option>
+                            <option value="parrot">Parrot</option>
+                            <option value="peacock">Peacock</option>
+                            <option value="swan">Swan</option>
+                            <option value="eagle">Eagle</option>
+                            <option value="flamingo">Flamingo</option>
+                            <option value="pelican">Pelican</option>
                         </select>
                     </div>
                     <div class="space-y-2">
@@ -101,6 +157,12 @@
                             <option value="pig">Pig</option>
                             <option value="sheep">Sheep</option>
                             <option value="koala">Koala</option>
+                            <option value="butterfly">Butterfly</option>
+                            <option value="bee">Bee</option>
+                            <option value="ladybug">Ladybug</option>
+                            <option value="dragonfly">Dragonfly</option>
+                            <option value="cricket">Cricket</option>
+                            <option value="firefly">Firefly</option>
                         </select>
                     </div>
                 </div>
@@ -169,21 +231,73 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const selects = document.querySelectorAll('.cube-face');
+            const categorySelects = document.querySelectorAll('.category-select');
+            const cubeSelects = document.querySelectorAll('.cube-face');
             const iframe = document.getElementById('game-iframe');
             const baseUrl = 'https://zoo-js.github.io/3dcube/?';
 
+            // Category options data
+            const categoryOptions = {
+                animals: {
+                    cat: "Cat", dog: "Dog", lion: "Lion", tiger: "Tiger", panda: "Panda",
+                    penguin: "Penguin", koala: "Koala", elephant: "Elephant", giraffe: "Giraffe",
+                    monkey: "Monkey", owl: "Owl", rabbit: "Rabbit"
+                },
+                food: {
+                    apple: "Apple", banana: "Banana", pizza: "Pizza", hamburger: "Hamburger",
+                    "ice-cream": "Ice Cream", coffee: "Coffee", tea: "Tea", cake: "Cake",
+                    cookie: "Cookie", lemon: "Lemon", orange: "Orange", strawberry: "Strawberry"
+                },
+                nature: {
+                    sun: "Sun", moon: "Moon", star: "Star", cloud: "Cloud", rainbow: "Rainbow",
+                    tree: "Tree", flower: "Flower", grass: "Grass", mountain: "Mountain",
+                    ocean: "Ocean", earth: "Earth", sakura: "Sakura"
+                },
+                tech: {
+                    html: "HTML", css: "CSS", js: "JavaScript", vue: "Vue", react: "React",
+                    ts: "TypeScript", python: "Python", java: "Java", cpp: "C++",
+                    ruby: "Ruby", php: "PHP", swift: "Swift"
+                }
+            };
+
+            function updateSelectOptions(categorySelect) {
+                const face = categorySelect.dataset.face;
+                const category = categorySelect.value;
+                const cubeSelect = document.querySelector(`.cube-face[data-face="${face}"]`);
+                
+                // Clear current options
+                cubeSelect.innerHTML = '';
+                
+                // Add new options based on category
+                Object.entries(categoryOptions[category]).forEach(([value, label]) => {
+                    const option = document.createElement('option');
+                    option.value = value;
+                    option.textContent = label;
+                    cubeSelect.appendChild(option);
+                });
+
+                // Update iframe URL after changing options
+                updateIframeUrl();
+            }
+
             function updateIframeUrl() {
-                const params = Array.from(selects).map(select => {
+                const params = Array.from(cubeSelects).map(select => {
                     return `${select.dataset.face}=${select.value}`;
                 });
                 params.push('bg=*ffd8bf');
                 iframe.src = baseUrl + params.join('&');
             }
 
-            selects.forEach(select => {
+            categorySelects.forEach(select => {
+                select.addEventListener('change', () => updateSelectOptions(select));
+            });
+
+            cubeSelects.forEach(select => {
                 select.addEventListener('change', updateIframeUrl);
             });
+
+            // Initialize all faces with their default categories
+            categorySelects.forEach(select => updateSelectOptions(select));
         });
     </script>
 </body>
