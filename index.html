@@ -244,9 +244,9 @@
                 },
                 food: {
                     red: { category: 'food', value: 'pizza' },
-                    white: { category: 'food', value: 'ice-cream' },
+                    white: { category: 'food', value: 'apple' },
                     blue: { category: 'food', value: 'coffee' },
-                    green: { category: 'food', value: 'apple' },
+                    green: { category: 'food', value: 'watermelon' },
                     orange: { category: 'food', value: 'hamburger' },
                     yellow: { category: 'food', value: 'banana' }
                 },
@@ -268,8 +268,8 @@
                 },
                 mixed: {
                     red: { category: 'animals', value: 'panda' },
-                    white: { category: 'tech', value: 'mac' },
-                    blue: { category: 'food', value: 'cake' },
+                    white: { category: 'tech', value: 'html' },
+                    blue: { category: 'food', value: 'hamburger' },
                     green: { category: 'nature', value: 'rainbow' },
                     orange: { category: 'life', value: 'rocket' },
                     yellow: { category: 'animals', value: 'butterfly' }
@@ -301,70 +301,35 @@
             // Complete category options data from zoo-js
             const categoryOptions = {
                 animals: {
-                    ant: "Ant", bat: "Bat", bear: "Bear", bee: "Bee", bird: "Bird",
-                    butterfly: "Butterfly", camel: "Camel", cat: "Cat", cattle: "Cattle",
-                    cheetah: "Cheetah", chicken: "Chicken", chimpanzee: "Chimpanzee",
-                    cow: "Cow", crab: "Crab", crocodile: "Crocodile", deer: "Deer",
-                    dog: "Dog", dolphin: "Dolphin", duck: "Duck", eagle: "Eagle",
-                    elephant: "Elephant", fish: "Fish", fox: "Fox", frog: "Frog",
-                    giraffe: "Giraffe", goat: "Goat", goldfish: "Goldfish",
-                    gorilla: "Gorilla", hamster: "Hamster", hippopotamus: "Hippopotamus",
-                    horse: "Horse", jellyfish: "Jellyfish", kangaroo: "Kangaroo",
-                    kitten: "Kitten", koala: "Koala", lark: "Lark", lion: "Lion",
-                    monkey: "Monkey", mouse: "Mouse", octopus: "Octopus",
-                    orangutan: "Orangutan", otter: "Otter", owl: "Owl", panda: "Panda",
-                    parrot: "Parrot", peacock: "Peacock", pelican: "Pelican",
-                    penguin: "Penguin", pig: "Pig", pigeon: "Pigeon",
-                    polarbear: "Polar Bear", rabbit: "Rabbit", raccoon: "Raccoon",
-                    reindeer: "Reindeer", rhinoceros: "Rhinoceros", seal: "Seal",
-                    shark: "Shark", sheep: "Sheep", shrimp: "Shrimp", sloth: "Sloth",
-                    snail: "Snail", snake: "Snake", spider: "Spider",
-                    squirrel: "Squirrel", starfish: "Starfish", swallow: "Swallow",
-                    swan: "Swan", tiger: "Tiger", tortoise: "Tortoise",
-                    totoro: "Totoro", unicorn: "Unicorn", whale: "Whale",
-                    wolf: "Wolf", zebra: "Zebra"
+                    cat: "Cat", dog: "Dog", pig: "Pig", sheep: "Sheep", 
+                    koala: "Koala", panda: "Panda", lion: "Lion", 
+                    tiger: "Tiger", elephant: "Elephant", monkey: "Monkey",
+                    penguin: "Penguin", dolphin: "Dolphin", giraffe: "Giraffe",
+                    bear: "Bear", fox: "Fox", rabbit: "Rabbit",
+                    whale: "Whale", shark: "Shark", owl: "Owl",
+                    butterfly: "Butterfly"
                 },
                 food: {
-                    acorn: "Acorn", apple: "Apple", banana: "Banana", beer: "Beer",
-                    carrot: "Carrot", cherry: "Cherry", coffee: "Coffee", 
-                    cookie: "Cookie", corn: "Corn", egg: "Egg", grape: "Grape", 
-                    hamburger: "Hamburger", icecream: "Ice Cream", lemon: "Lemon",
-                    milk: "Milk", orange: "Orange", peach: "Peach",
-                    pineapple: "Pineapple", pizza: "Pizza", popsicle: "Popsicle",
-                    strawberry: "Strawberry", tea: "Tea", watermelon: "Watermelon"
+                    apple: "Apple", banana: "Banana", pizza: "Pizza",
+                    hamburger: "Hamburger", coffee: "Coffee",
+                    watermelon: "Watermelon", grape: "Grape",
+                    orange: "Orange", lemon: "Lemon",
+                    carrot: "Carrot"
                 },
                 nature: {
-                    bamboo: "Bamboo", cactus: "Cactus", cloud: "Cloud",
-                    flower: "Flower", grass: "Grass", moon: "Moon", 
-                    rainbow: "Rainbow", rose: "Rose", sakura: "Sakura", 
-                    star: "Star", sun: "Sun", tree: "Tree"
+                    sun: "Sun", moon: "Moon", star: "Star",
+                    cloud: "Cloud", rainbow: "Rainbow",
+                    tree: "Tree", flower: "Flower"
                 },
                 tech: {
-                    bug: "Bug", apple: "Apple", html: "HTML", js: "JavaScript",
-                    ts: "TypeScript", css: "CSS", vue: "Vue", react: "React"
+                    html: "HTML", css: "CSS", js: "JavaScript",
+                    vue: "Vue", react: "React", ts: "TypeScript"
                 },
                 life: {
-                    alarm: "Alarm", ambulance: "Ambulance", anchor: "Anchor",
-                    backpack: "Backpack", balloon: "Balloon", bamboo: "Bamboo",
-                    basket: "Basket", bed: "Bed", bell: "Bell", bike: "Bike",
-                    book: "Book", bottle: "Bottle", bowl: "Bowl", box: "Box",
-                    brush: "Brush", bucket: "Bucket", camera: "Camera",
-                    candle: "Candle", candy: "Candy", car: "Car", card: "Card",
-                    chair: "Chair", clock: "Clock", compass: "Compass", 
-                    crown: "Crown", cup: "Cup", desk: "Desk", door: "Door", 
-                    dress: "Dress", drum: "Drum", fan: "Fan", flag: "Flag", 
-                    flower: "Flower", fork: "Fork", gift: "Gift", 
-                    glasses: "Glasses", glove: "Glove", guitar: "Guitar", 
-                    hat: "Hat", heart: "Heart", key: "Key", knife: "Knife", 
-                    lamp: "Lamp", leaf: "Leaf", lock: "Lock", map: "Map", 
-                    medal: "Medal", moon: "Moon", music: "Music", pen: "Pen",
-                    pencil: "Pencil", phone: "Phone", piano: "Piano",
-                    pillow: "Pillow", plane: "Plane", pot: "Pot", 
-                    rainbow: "Rainbow", ring: "Ring", rocket: "Rocket", 
-                    ruler: "Ruler", scissors: "Scissors", ship: "Ship", 
-                    shoe: "Shoe", soap: "Soap", sock: "Sock", spoon: "Spoon", 
-                    star: "Star", sun: "Sun", table: "Table", tent: "Tent",
-                    umbrella: "Umbrella", watch: "Watch"
+                    phone: "Phone", book: "Book", music: "Music",
+                    camera: "Camera", car: "Car", heart: "Heart",
+                    rocket: "Rocket", clock: "Clock", gift: "Gift",
+                    key: "Key"
                 }
             };
 
@@ -396,36 +361,29 @@
                 iframe.src = baseUrl + params.join('&');
             }
 
-            categorySelects.forEach(select => {
-                select.addEventListener('change', () => updateSelectOptions(select));
-            });
+            // Initialize all faces with their default categories
+            categorySelects.forEach(select => updateSelectOptions(select));
 
-            cubeSelects.forEach(select => {
-                select.addEventListener('change', updateIframeUrl);
-            });
+            // Set initial values
+            const defaultValues = {
+                red: { category: 'animals', value: 'cat' },
+                white: { category: 'animals', value: 'dog' },
+                blue: { category: 'animals', value: 'pig' },
+                green: { category: 'animals', value: 'sheep' },
+                orange: { category: 'animals', value: 'koala' },
+                yellow: { category: 'animals', value: 'panda' }
+            };
 
-            // Initialize with default values
-            window.addEventListener('DOMContentLoaded', function() {
-                const defaultValues = {
-                    red: { category: 'animals', value: 'cat' },
-                    white: { category: 'animals', value: 'dog' },
-                    blue: { category: 'animals', value: 'pig' },
-                    green: { category: 'animals', value: 'sheep' },
-                    orange: { category: 'animals', value: 'koala' },
-                    yellow: { category: 'animals', value: 'ant' }
-                };
-
-                Object.entries(defaultValues).forEach(([face, config]) => {
-                    const categorySelect = document.querySelector(`.category-select[data-face="${face}"]`);
-                    categorySelect.value = config.category;
-                    updateSelectOptions(categorySelect);
-                    
-                    setTimeout(() => {
-                        const cubeSelect = document.querySelector(`.cube-face[data-face="${face}"]`);
-                        cubeSelect.value = config.value;
-                        updateIframeUrl();
-                    }, 100);
-                });
+            Object.entries(defaultValues).forEach(([face, config]) => {
+                const categorySelect = document.querySelector(`.category-select[data-face="${face}"]`);
+                categorySelect.value = config.category;
+                updateSelectOptions(categorySelect);
+                
+                setTimeout(() => {
+                    const cubeSelect = document.querySelector(`.cube-face[data-face="${face}"]`);
+                    cubeSelect.value = config.value;
+                    updateIframeUrl();
+                }, 100);
             });
         });
     </script>
