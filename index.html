@@ -40,7 +40,6 @@
                     <label class="block text-sm font-medium text-gray-700 mb-2">Quick Themes</label>
                     <select id="preset-themes" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
                         <option value="custom">Custom Theme</option>
-                        <option value="completion">Completion State</option>
                         <option value="safari">Safari Adventure</option>
                         <option value="tech">Tech World</option>
                         <option value="food">Delicious Food</option>
@@ -155,15 +154,6 @@
                 </div>
             </div>
             <div class="game-container">
-                <div class="text-center mb-4">
-                    <button id="start-game" class="bg-indigo-600 text-white px-6 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mb-2">
-                        开始游戏
-                    </button>
-                    <button id="pause-game" class="bg-orange-500 text-white px-6 py-2 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-offset-2 mb-2 hidden">
-                        暂停游戏
-                    </button>
-                    <div id="timer" class="text-2xl font-semibold text-gray-900">00:00:00</div>
-                </div>
                 <iframe id="game-iframe"
                     src="https://zoo-js.github.io/3dcube/?red=cat&white=dog&blue=pig&green=sheep&orange=koala&yellow=ant&bg=*ffd8bf"
                     class="w-full h-full rounded-lg"
@@ -171,9 +161,6 @@
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowfullscreen>
                 </iframe>
-                <div id="completion-message" class="mt-4 text-center text-lg font-semibold text-green-600 hidden">
-                    恭喜完成！用时：<span id="completion-time"></span>
-                </div>
             </div>
         </div>
 
@@ -238,14 +225,6 @@
 
             // Preset themes configuration
             const presets = {
-                completion: {
-                    red: { category: 'tech', value: 'html' },
-                    white: { category: 'tech', value: 'css' },
-                    blue: { category: 'tech', value: 'js' },
-                    green: { category: 'tech', value: 'vue' },
-                    orange: { category: 'tech', value: 'react' },
-                    yellow: { category: 'tech', value: 'ts' }
-                },
                 safari: {
                     red: { category: 'animals', value: 'lion' },
                     white: { category: 'animals', value: 'elephant' },
@@ -415,114 +394,6 @@
                     updateIframeUrl();
                 }, 100);
             });
-
-            // Timer functionality
-            const startButton = document.getElementById('start-game');
-            const pauseButton = document.getElementById('pause-game');
-            const timerDisplay = document.getElementById('timer');
-            const completionMessage = document.getElementById('completion-message');
-            const completionTime = document.getElementById('completion-time');
-            let startTime;
-            let timerInterval;
-            let isGameRunning = false;
-            let isPaused = false;
-            let elapsedTime = 0;
-
-            function formatTime(ms) {
-                const hours = Math.floor(ms / 3600000);
-                const minutes = Math.floor((ms % 3600000) / 60000);
-                const seconds = Math.floor((ms % 60000) / 1000);
-                return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            }
-
-            function updateTimer() {
-                if (!isPaused) {
-                    const currentTime = Date.now();
-                    elapsedTime = currentTime - startTime;
-                    timerDisplay.textContent = formatTime(elapsedTime);
-                }
-            }
-
-            function startGame() {
-                if (isGameRunning && !isPaused) return;
-                
-                if (!isGameRunning) {
-                    // Start new game
-                    isGameRunning = true;
-                    startTime = Date.now();
-                    elapsedTime = 0;
-                    completionMessage.classList.add('hidden');
-                } else if (isPaused) {
-                    // Resume game
-                    startTime = Date.now() - elapsedTime;
-                    isPaused = false;
-                }
-
-                startButton.textContent = '继续游戏';
-                startButton.classList.add('hidden');
-                pauseButton.classList.remove('hidden');
-                
-                // Start or resume timer
-                timerInterval = setInterval(updateTimer, 1000);
-            }
-
-            function pauseGame() {
-                if (!isGameRunning || isPaused) return;
-                
-                // Pause timer
-                clearInterval(timerInterval);
-                isPaused = true;
-                
-                // Update button states
-                startButton.classList.remove('hidden');
-                pauseButton.classList.add('hidden');
-            }
-
-            function checkCompletion() {
-                // Check if all faces match their corresponding colors
-                const currentState = {
-                    red: document.querySelector('.cube-face[data-face="red"]').value,
-                    white: document.querySelector('.cube-face[data-face="white"]').value,
-                    blue: document.querySelector('.cube-face[data-face="blue"]').value,
-                    green: document.querySelector('.cube-face[data-face="green"]').value,
-                    orange: document.querySelector('.cube-face[data-face="orange"]').value,
-                    yellow: document.querySelector('.cube-face[data-face="yellow"]').value
-                };
-
-                const isComplete = currentState.red === 'html' &&
-                                 currentState.white === 'css' &&
-                                 currentState.blue === 'js' &&
-                                 currentState.green === 'vue' &&
-                                 currentState.orange === 'react' &&
-                                 currentState.yellow === 'ts';
-
-                if (isComplete && isGameRunning) {
-                    // Stop timer and show completion message
-                    clearInterval(timerInterval);
-                    isGameRunning = false;
-                    const finalTime = formatTime(elapsedTime);
-                    completionTime.textContent = finalTime;
-                    completionMessage.classList.remove('hidden');
-                    startButton.textContent = '开始游戏';
-                    startButton.classList.remove('hidden');
-                    pauseButton.classList.add('hidden');
-                }
-            }
-
-            // Add event listeners for cube face changes to check completion
-            cubeSelects.forEach(select => {
-                select.addEventListener('change', () => {
-                    updateIframeUrl();
-                    presetThemes.value = 'custom';
-                    if (isGameRunning) {
-                        checkCompletion();
-                    }
-                });
-            });
-
-            // Add event listeners for start and pause buttons
-            startButton.addEventListener('click', startGame);
-            pauseButton.addEventListener('click', pauseGame);
         });
     </script>
 </body>
