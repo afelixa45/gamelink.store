@@ -36,6 +36,18 @@
         <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
             <div class="mb-6">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4">Customize Your Cube</h2>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Quick Themes</label>
+                    <select id="preset-themes" class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <option value="custom">Custom Theme</option>
+                        <option value="safari">Safari Adventure</option>
+                        <option value="tech">Tech World</option>
+                        <option value="food">Delicious Food</option>
+                        <option value="nature">Natural World</option>
+                        <option value="daily">Daily Life</option>
+                        <option value="mixed">Fun Mix</option>
+                    </select>
+                </div>
                 <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
                     <div class="space-y-2">
                         <label class="block text-sm font-medium text-gray-700">Red Face</label>
@@ -209,7 +221,82 @@
             const categorySelects = document.querySelectorAll('.category-select');
             const cubeSelects = document.querySelectorAll('.cube-face');
             const iframe = document.getElementById('game-iframe');
+            const presetThemes = document.getElementById('preset-themes');
             const baseUrl = 'https://zoo-js.github.io/3dcube/?';
+
+            // Preset themes configuration
+            const presets = {
+                safari: {
+                    red: { category: 'animals', value: 'lion' },
+                    white: { category: 'animals', value: 'elephant' },
+                    blue: { category: 'animals', value: 'dolphin' },
+                    green: { category: 'animals', value: 'giraffe' },
+                    orange: { category: 'animals', value: 'tiger' },
+                    yellow: { category: 'animals', value: 'monkey' }
+                },
+                tech: {
+                    red: { category: 'tech', value: 'html' },
+                    white: { category: 'tech', value: 'css' },
+                    blue: { category: 'tech', value: 'js' },
+                    green: { category: 'tech', value: 'vue' },
+                    orange: { category: 'tech', value: 'react' },
+                    yellow: { category: 'tech', value: 'ts' }
+                },
+                food: {
+                    red: { category: 'food', value: 'pizza' },
+                    white: { category: 'food', value: 'ice-cream' },
+                    blue: { category: 'food', value: 'coffee' },
+                    green: { category: 'food', value: 'apple' },
+                    orange: { category: 'food', value: 'hamburger' },
+                    yellow: { category: 'food', value: 'banana' }
+                },
+                nature: {
+                    red: { category: 'nature', value: 'sun' },
+                    white: { category: 'nature', value: 'cloud' },
+                    blue: { category: 'nature', value: 'moon' },
+                    green: { category: 'nature', value: 'tree' },
+                    orange: { category: 'nature', value: 'flower' },
+                    yellow: { category: 'nature', value: 'star' }
+                },
+                daily: {
+                    red: { category: 'life', value: 'phone' },
+                    white: { category: 'life', value: 'book' },
+                    blue: { category: 'life', value: 'music' },
+                    green: { category: 'life', value: 'camera' },
+                    orange: { category: 'life', value: 'car' },
+                    yellow: { category: 'life', value: 'heart' }
+                },
+                mixed: {
+                    red: { category: 'animals', value: 'panda' },
+                    white: { category: 'tech', value: 'mac' },
+                    blue: { category: 'food', value: 'cake' },
+                    green: { category: 'nature', value: 'rainbow' },
+                    orange: { category: 'life', value: 'rocket' },
+                    yellow: { category: 'animals', value: 'butterfly' }
+                }
+            };
+
+            function applyPreset(presetName) {
+                if (presetName === 'custom') return;
+                
+                const preset = presets[presetName];
+                Object.entries(preset).forEach(([face, config]) => {
+                    const categorySelect = document.querySelector(`.category-select[data-face="${face}"]`);
+                    categorySelect.value = config.category;
+                    updateSelectOptions(categorySelect);
+                    
+                    setTimeout(() => {
+                        const cubeSelect = document.querySelector(`.cube-face[data-face="${face}"]`);
+                        cubeSelect.value = config.value;
+                        updateIframeUrl();
+                    }, 100);
+                });
+            }
+
+            // Add event listener for preset themes
+            presetThemes.addEventListener('change', (e) => {
+                applyPreset(e.target.value);
+            });
 
             // Complete category options data from zoo-js
             const categoryOptions = {
